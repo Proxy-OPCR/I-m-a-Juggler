@@ -1,0 +1,9 @@
+/* style.css */
+body { font-family: Arial, sans-serif; background: #0b1220; color: #fff; display:flex; align-items:center; justify-content:center; height:100vh; margin:0;}
+.machine { width:360px; background:linear-gradient(#222,#111); border-radius:12px; padding:20px; box-shadow: 0 10px 30px rgba(0,0,0,.6); }
+.reels { display:flex; justify-content:space-between; margin-bottom:16px; }
+.reel { width:100px; height:80px; background:#fff; color:#000; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:bold; }
+.controls { display:flex; gap:8px; justify-content:center; }
+button { padding:8px 12px; border-radius:6px; border:none; cursor:pointer; }
+.status { margin-top:12px; text-align:center; font-size:14px; color:#ffefc1; }
+.machine.flash { box-shadow: 0 0 30px 6px rgba(255,200,0,.6); transform: scale(1.02); transition: .12s; }
