@@ -1,14 +1,22 @@
-const sounds = {
-  start: new Audio("assets/sounds/start.mp3"),
-  stop: new Audio("assets/sounds/stop.mp3"),
-  big: new Audio("assets/sounds/big.mp3"),
-  reg: new Audio("assets/sounds/reg.mp3"),
-  fanfare: new Audio("assets/sounds/fanfare.mp3")
-};
+from pydub import AudioSegment
+from pydub.generators import Sine
 
-export function playSound(name) {
-  if (sounds[name]) {
-    sounds[name].currentTime = 0;
-    sounds[name].play();
-  }
-}
+# GOGO!ランプ音
+sound = Sine(880).to_audio_segment(duration=200).fade_in(50).fade_out(150)
+sound.export("frontend/assets/sounds/gogo.mp3", format="mp3")
+
+# レバーON音
+click = Sine(1200).to_audio_segment(duration=50).fade_out(30)
+click.export("frontend/assets/sounds/start.mp3", format="mp3")
+
+# ストップ音
+stop = Sine(600).to_audio_segment(duration=80).fade_out(40)
+stop.export("frontend/assets/sounds/stop.mp3", format="mp3")
+
+# ファンファーレ（ボーナス確定）
+fan = (
+    Sine(440).to_audio_segment(duration=200)
+    + Sine(660).to_audio_segment(duration=200)
+    + Sine(880).to_audio_segment(duration=400)
+)
+fan.export("frontend/assets/sounds/fanfare.mp3", format="mp3")
