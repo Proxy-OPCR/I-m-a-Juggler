@@ -1,11 +1,15 @@
 {
   "name": "imjuggler8497",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "アイムジャグラー8497 - Render deployable version",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "build": "npm run clean && npm run copy && npm run minify",
+    "clean": "rm -rf dist && mkdir dist",
+    "copy": "cp -r frontend/* dist/",
+    "minify": "npx html-minifier-terser --input-dir frontend --output-dir dist --collapse-whitespace --remove-comments --minify-css true --minify-js true"
   },
   "dependencies": {
     "express": "^4.19.2",
@@ -13,7 +17,8 @@
     "cors": "^2.8.5"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "html-minifier-terser": "^7.2.0"
   },
   "engines": {
     "node": ">=22.x"
