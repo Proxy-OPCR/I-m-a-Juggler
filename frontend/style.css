@@ -1,63 +1,63 @@
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at center, #1c1c2a, #0b0b15);
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
+#jukebox {
+  position: relative;
+  width: 480px;
+  margin: 50px auto;
+  background: #000;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 30px #ff00ff;
+  font-family: 'Arial Black', sans-serif;
 }
-.machine {
-  width: 400px;
-  padding: 20px;
-  background: linear-gradient(#202030, #101015);
-  border-radius: 16px;
-  box-shadow: 0 0 40px rgba(255, 100, 0, 0.4);
-  text-align: center;
+
+.panel-frame {
+  width: 100%;
+  display: block;
 }
-.title {
-  color: #ffcd00;
-  margin-bottom: 16px;
-}
+
 .reels {
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 16px;
+  justify-content: space-between;
+  padding: 20px 30px;
 }
+
 .reel {
   width: 100px;
-  height: 90px;
-  border-radius: 8px;
-  background: #fff;
-  color: #000;
-  font-weight: bold;
-  font-size: 26px;
+  height: 150px;
+  background: #222;
+  border: 2px solid #fff;
+  border-radius: 10px;
+}
+
+.gogo-lamp {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+}
+
+.buttons {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  margin: 10px 30px;
 }
-.controls button {
-  margin: 6px;
-  padding: 8px 12px;
-  background: #ff0044;
+
+.buttons button {
+  width: 70px;
+  height: 40px;
+  border-radius: 5px;
   border: none;
-  border-radius: 6px;
+  background: linear-gradient(#ff5555, #aa0000);
   color: #fff;
+  font-weight: bold;
   cursor: pointer;
-  transition: 0.2s;
 }
-.controls button:hover {
-  background: #ff5580;
-}
-.status {
-  margin-top: 12px;
-  color: #ffefb2;
-}
-.flash {
-  animation: flash 1s infinite alternate;
-}
-@keyframes flash {
-  from { box-shadow: 0 0 20px rgba(255,255,0,.2); }
-  to   { box-shadow: 0 0 40px rgba(255,255,0,1); }
+
+.display {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 30px;
+  color: #fff;
+  font-size: 14px;
+  text-shadow: 1px 1px 2px #000;
 }
