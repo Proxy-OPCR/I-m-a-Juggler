@@ -1,16 +1,14 @@
-function playSound(name){
-  const sounds = {
-    power: "assets/sounds/power.mp3",
-    coin: "assets/sounds/coin.mp3",
-    spin: "assets/sounds/spin.mp3",
-    bonus: "assets/sounds/bonus.mp3",
-    jackpot: "assets/sounds/jackpot.mp3",
-    payout: "assets/sounds/payout.mp3"
-  };
-  const url = sounds[name];
-  if(url){
-    const a = new Audio(url);
-    a.volume = 0.5;
-    a.play();
+const sounds = {
+  start: new Audio("assets/sounds/start.mp3"),
+  stop: new Audio("assets/sounds/stop.mp3"),
+  big: new Audio("assets/sounds/big.mp3"),
+  reg: new Audio("assets/sounds/reg.mp3"),
+  fanfare: new Audio("assets/sounds/fanfare.mp3")
+};
+
+export function playSound(name) {
+  if (sounds[name]) {
+    sounds[name].currentTime = 0;
+    sounds[name].play();
   }
 }
