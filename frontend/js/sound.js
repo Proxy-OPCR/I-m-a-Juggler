@@ -20,3 +20,5 @@ fan = (
     + Sine(880).to_audio_segment(duration=400)
 )
 fan.export("frontend/assets/sounds/fanfare.mp3", format="mp3")
+
+/public/js/sound.js
