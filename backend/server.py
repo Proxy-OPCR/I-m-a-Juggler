@@ -1,14 +1,12 @@
-from flask import Flask, jsonify
-from events import bus, EVENTS
-from game_logic import spin_logic
+from flask import Flask, jsonify, request
+from game_logic import get_result
 
 app = Flask(__name__)
 
-@app.route("/spin", methods=["GET"])
+@app.route("/api/spin", methods=["POST"])
 def spin():
-    spin_logic()
-    return jsonify({"status": "ok"})
+    result = get_result()
+    return jsonify(result)
 
 if __name__ == "__main__":
-    print("🎰 Server running at http://127.0.0.1:5000/")
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
