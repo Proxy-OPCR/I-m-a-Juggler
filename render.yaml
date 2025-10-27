@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: imjuggler-frontend
+    env: node
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    plan: free
+    branch: main
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+  - type: web
+    name: imjuggler-backend
+    env: python
+    buildCommand: "pip install -r backend/requirements.txt"
+    startCommand: "python backend/server.py"
+    plan: free
+    branch: main
+    autoDeploy: true
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
