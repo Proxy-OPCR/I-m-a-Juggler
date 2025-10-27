@@ -1,138 +1,25 @@
-<!-- index.html -->
-<!doctype html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8" />
-  <title>アイムジャグラー プロトタイプ</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div id="machine" class="machine">
-    <div class="panel">
-      <div id="reels" class="reels">
-        <div class="reel" data-index="0">7</div>
-        <div class="reel" data-index="1">BAR</div>
-        <div class="reel" data-index="2">🍒</div>
-      </div>
-      <div class="controls">
-        <button id="coinBtn">コイン投入</button>
-        <button id="spinBtn">スピン</button>
-      </div>
-      <div id="status" class="status">状態: 待機</div>
-    </div>
+<div id="jukebox">
+  <img src="assets/images/panel_frame.png" class="panel-frame">
+
+  <div class="reels">
+    <canvas id="reel1" class="reel"></canvas>
+    <canvas id="reel2" class="reel"></canvas>
+    <canvas id="reel3" class="reel"></canvas>
   </div>
 
-  <script>
-  // Base event code
-  const BASE = 8497;
-  const EVENTS = {
-    POWER_ON: BASE,
-    COIN_INSERT: BASE+1,
-    SPIN_START: BASE+2,
-    REEL_STOP: BASE+3,
-    BONUS_HIT: BASE+4,
-    JACKPOT_HIT: BASE+5,
-    PAYOUT_START: BASE+6,
-    LIGHT_ON: BASE+7,
-    LIGHT_OFF: BASE+8,
-    SOUND_PLAY: BASE+9
-  };
+  <img src="assets/images/gogo_lamp.png" id="gogo-lamp" class="gogo-lamp">
 
-  // シンプルイベントディスパッチャ
-  class EventBus {
-    constructor(){ this.handlers = {}; }
-    on(code, fn){ (this.handlers[code]||(this.handlers[code]=[])).push(fn); }
-    emit(code, payload){ (this.handlers[code]||[]).forEach(h=>h(payload)); }
-  }
-  const bus = new EventBus();
+  <div class="buttons">
+    <button id="bet">BET</button>
+    <button id="max">MAX BET</button>
+    <button id="start">START</button>
+    <button id="stop1">STOP 1</button>
+    <button id="stop2">STOP 2</button>
+    <button id="stop3">STOP 3</button>
+  </div>
 
-  // UI要素
-  const status = document.getElementById('status');
-  const reels = [...document.querySelectorAll('.reel')];
-
-  // ハンドラ登録
-  bus.on(EVENTS.COIN_INSERT, p => {
-    status.textContent = '状態: コイン投入';
-    bus.emit(EVENTS.SOUND_PLAY, {name:'coin'});
-  });
-
-  bus.on(EVENTS.SPIN_START, p => {
-    status.textContent = '状態: 回転中...';
-    // 簡易リールアニメ
-    reels.forEach((r,i)=>{
-      r.textContent = '...';
-      setTimeout(()=> {
-        // ランダムシンボル
-        const symbols = ['7','BAR','🍒','🔔','⭐'];
-        r.textContent = symbols[Math.floor(Math.random()*symbols.length)];
-        bus.emit(EVENTS.REEL_STOP, {index:i, symbol:r.textContent});
-      }, 500 + i*300);
-    });
-    bus.emit(EVENTS.SOUND_PLAY,{name:'spin'});
-  });
-
-  let stopCount = 0;
-  bus.on(EVENTS.REEL_STOP, p=>{
-    stopCount++;
-    status.textContent = `リール${p.index+1}停止: ${p.symbol}`;
-    if(stopCount===3){
-      stopCount = 0;
-      // 当たり判定（簡易）
-      const s = reels.map(r=>r.textContent);
-      if(s[0]===s[1] && s[1]===s[2]){
-        bus.emit(EVENTS.JACKPOT_HIT, {symbol:s[0]});
-      } else if (s.filter(x=>x==='🍒').length>=2){
-        bus.emit(EVENTS.BONUS_HIT, {count: s.filter(x=>x==='🍒').length});
-      } else {
-        bus.emit(EVENTS.PAYOUT_START, {coins: 0});
-      }
-    }
-  });
-
-  bus.on(EVENTS.BONUS_HIT, p=>{
-    status.textContent = `ボーナス！チェリー ${p.count}`;
-    bus.emit(EVENTS.LIGHT_ON, {pattern:'bonus'});
-    bus.emit(EVENTS.SOUND_PLAY, {name:'bonus'});
-  });
-
-  bus.on(EVENTS.JACKPOT_HIT, p=>{
-    status.textContent = `ジャックポット！ ${p.symbol}`;
-    bus.emit(EVENTS.LIGHT_ON, {pattern:'jackpot'});
-    bus.emit(EVENTS.SOUND_PLAY, {name:'jackpot'});
-    bus.emit(EVENTS.PAYOUT_START, {coins: 999});
-  });
-
-  bus.on(EVENTS.PAYOUT_START, p=>{
-    status.textContent = `払出し: ${p.coins}枚`;
-    bus.emit(EVENTS.SOUND_PLAY, {name:'payout'});
-  });
-
-  bus.on(EVENTS.SOUND_PLAY, p=>{
-    console.log('play sound:', p.name);
-    // 実装ではWebAudioで効果音再生
-  });
-
-  bus.on(EVENTS.LIGHT_ON, p=>{
-    console.log('light on:', p.pattern);
-    document.getElementById('machine').classList.add('flash');
-    setTimeout(()=>document.getElementById('machine').classList.remove('flash'), 1500);
-  });
-
-  // UIイベント
-  document.getElementById('coinBtn').addEventListener('click', ()=> bus.emit(EVENTS.COIN_INSERT));
-  document.getElementById('spinBtn').addEventListener('click', ()=> bus.emit(EVENTS.SPIN_START));
-
-  // 電源オン
-  bus.emit(EVENTS.POWER_ON);
-  </script>
-  <script src="js/sound.js"></script>
-<script>
-  // 例：ボタン押下で再生
-  function onPeka() {
-    Sounds.peka();
-  }
-</script>
-
-<button onclick="onPeka()">ペカ音！</button>
-</body>
-</html>
+  <div class="display">
+    <span id="credit">CREDIT: 100</span>
+    <span id="bonus">BIG: 12 / REG: 3</span>
+  </div>
+</div>
