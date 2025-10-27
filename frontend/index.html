@@ -125,5 +125,14 @@
   // 電源オン
   bus.emit(EVENTS.POWER_ON);
   </script>
+  <script src="js/sound.js"></script>
+<script>
+  // 例：ボタン押下で再生
+  function onPeka() {
+    Sounds.peka();
+  }
+</script>
+
+<button onclick="onPeka()">ペカ音！</button>
 </body>
 </html>
